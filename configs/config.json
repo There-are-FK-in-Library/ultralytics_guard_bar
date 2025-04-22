@@ -1,0 +1,6 @@
+{
+  "py_server_ip": "127.0.0.1",
+  "segnet_w":600,
+  "segnet_h":600,
+  "nclass":6
+}
