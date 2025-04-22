@@ -5,8 +5,9 @@ from PIL import Image
 import time
 import multiprocessing
 import json
+import sys
 
-with open('./configs/config.json', 'r') as f:
+with open(r'D:\WJ\Pycharm_workspace\ultralytics_guard_bar\configs\config.json', 'r') as f:
     tmp = f.read()
     configDic = json.loads(tmp)
 

@@ -79,7 +79,7 @@ def put_time_str_rgb(img):
     return img
 
 
-with open('./configs/config.json', 'r') as f:
+with open(r'D:\WJ\Pycharm_workspace\ultralytics_guard_bar\configs\config.json', 'r') as f:
     tmp = f.read()
     configDic = json.loads(tmp)
 
@@ -196,9 +196,9 @@ class FlaskServerLaneClass():
         mlog = logger('xex_flask_bino_server.log')
         # detector = SmallSignsClassify()
 
-        mlog.info("detection init Net success")
+        # mlog.info("detection init Net success")
         status = True
-        model = YOLO("runs/classify/train13/weights/best.pt")
+        model = YOLO(r"D:\WJ\Pycharm_workspace\ultralytics_guard_bar\runs\classify\train13\weights\best.pt")
 
         @app.route('/http/url_get_bino_obj_detect_from_py/', methods=['POST'])
         def post_http_img_data():
@@ -243,7 +243,9 @@ if __name__ == '__main__':
     app_lane_server = FlaskServerLaneClass()
     app_lane_server.run()
 
+
     while True:
         time.sleep(1000)
     # app.run(host='127.0.0.1', port=5000,debug=True)
     # 这里指定了地址和端口号。也可以不指定地址填0.0.0.0那么就会使用本机地址ip
+
