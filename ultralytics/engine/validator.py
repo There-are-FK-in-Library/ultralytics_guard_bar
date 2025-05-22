@@ -29,6 +29,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import os
 
 from ultralytics.cfg import get_cfg, get_save_dir
 from ultralytics.data.utils import check_cls_dataset, check_det_dataset
@@ -223,8 +224,17 @@ class BaseValidator:
                 preds = self.postprocess(preds)
 
             self.update_metrics(preds, batch)
+
+            # 找到 preds 中的最大值索引
+            max_value, max_index = torch.max(preds, dim=1)  # max_index 是最大值的索引
+
+            # 判断 max_index 是否与 batch["cls"] 相等
+            is_equal = (max_index != batch["cls"])
+
             # if self.args.plots and batch_i < 3:
-            if self.args.plots:
+            if self.args.plots and is_equal.item() :
+                # if not os.path.exists(os.path.join(self.save_dir, error_path)):
+                #     os.makedirs(os.path.join(self.save_dir, error_path))
                 self.plot_val_samples(batch, batch_i)
                 self.plot_predictions(batch, preds, batch_i)
 

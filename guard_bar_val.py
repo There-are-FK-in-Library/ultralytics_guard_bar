@@ -6,9 +6,9 @@ if __name__ == '__main__':
     freeze_support()
 
 # Load a model
-    model = YOLO("runs/classify/train7/weights/best.pt")  # load the trained model
+    model = YOLO(r"D:\WJ\Pycharm_workspace\ultralytics_guard_bar\runs\classify\train10\weights\best.pt")  # load the trained model
 
     # Validate the model
-    metrics = model.val(batch=2)  # no arguments needed, uses the dataset and settings from training
+    metrics = model.val(batch=1, imgsz=300)  # no arguments needed, uses the dataset and settings from training
     metrics.top1  # top1 accuracy
     metrics.top5  # top5 accuracy

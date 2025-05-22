@@ -1,7 +1,7 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import torch
-
+import os
 from ultralytics.data import ClassificationDataset, build_dataloader
 from ultralytics.engine.validator import BaseValidator
 from ultralytics.utils import LOGGER
@@ -205,11 +205,24 @@ class ClassificationValidator(BaseValidator):
             >>> preds = torch.rand(16, 10)  # 16 images, 10 classes
             >>> validator.plot_predictions(batch, preds, 0)
         """
+        # 查找倒数第二个反斜杠的位置
+        path_pred = batch['imgfile']
+        path_pred = "\n".join(path_pred)
+        parts = path_pred.rsplit('\\', 2)  # 从右侧分割，最多分成3部分
+        if len(parts) < 3:
+            # 如果反斜杠的数量少于2个，抛出 ValueError
+            raise ValueError("路径中反斜杠的数量少于2个。")
+        else:
+            # 返回倒数第二个反斜杠之后的部分
+            save_pred =self.save_dir / parts[-2] / parts[-1]
+        path_pred_class=self.save_dir / parts[-2]
+        os.makedirs(path_pred_class, exist_ok=True)
         plot_images(
-            batch["img"],
-            batch_idx=torch.arange(len(batch["img"])),
+            batch["img_original"],
+            batch_idx=torch.arange(len(batch["img_original"])),
             cls=torch.argmax(preds, dim=1),
-            fname=self.save_dir / f"val_batch{ni}_pred.jpg",
+            # fname=self.save_dir / f"val_batch{ni}_pred.jpg",
+            fname=save_pred,
             names=self.names,
             on_plot=self.on_plot,
         )  # pred
