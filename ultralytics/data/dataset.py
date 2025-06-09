@@ -5,7 +5,7 @@ from collections import defaultdict
 from itertools import repeat
 from multiprocessing.pool import ThreadPool
 from pathlib import Path
-
+from torchvision import transforms
 import cv2
 import numpy as np
 import torch
@@ -776,8 +776,12 @@ class ClassificationDataset:
             im = cv2.imread(f)  # BGR
         # Convert NumPy array to PIL image
         im = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
+        # 定义转换
+        transform = transforms.ToTensor()
+        # 将 PIL 图像转换为 Tensor
+        img_original = transform(im)
         sample = self.torch_transforms(im)
-        return {"img": sample, "cls": j}
+        return {"img": sample, "img_original": img_original, "cls": j, "imgfile": f}
 
     def __len__(self) -> int:
         """Return the total number of samples in the dataset."""
